@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Narrative Studios</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --neon-accent: white;
+      --gradient-start: #1a1a1a;
+      --gradient-end: #2d2d2d;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--gradient-start);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--neon-accent);
+      border-radius: 4px;
+    }
+
+    .floating-logo {
+      position: fixed;
+      top: 30px;
+      left: 40px;
+      z-index: 1050;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      filter: drop-shadow(0 0 8px rgba(0, 243, 255, 0.3));
+    }
+
+    .floating-logo:hover {
+      transform: rotate(15deg) scale(1.2);
+      filter: drop-shadow(0 0 15px var(--neon-accent));
+    }
+
+    .navbar {
+      background: linear-gradient(90deg, 
+        rgba(25, 25, 25, 0.95) 0%, 
+        rgba(40, 40, 40, 0.95) 100%) !important;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(var(--neon-accent), 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 0.5rem 1.5rem !important;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--neon-accent);
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    .hero-section {
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(45deg, 
+        rgba(0, 0, 0, 0.9) 30%, 
+        rgba(0, 0, 0, 0.6) 100%);
+    }
+
+    .hero-video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 100%;
+      min-height: 100%;
+      opacity: 0.3;
+      z-index: -1;
+      mix-blend-mode: screen;
+    }
+
+    .display-1 {
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      background: linear-gradient(45deg, #fff, var(--neon-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.5));
+    }
+
+    .project-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background: linear-gradient(145deg, 
+        var(--gradient-start) 0%, 
+        var(--gradient-end) 100%) !important;
+      border: 1px solid rgba(var(--neon-accent), 0.1) !important;
+      overflow: hidden;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(0, 243, 255, 0.1);
+    }
+
+    .project-card img {
+      transition: transform 0.4s ease;
+      filter: grayscale(30%);
+    }
+
+    .project-card:hover img {
+      transform: scale(1.1);
+      filter: grayscale(0%);
+    }
+
+    .section-title {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 15px;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: var(--neon-accent);
+    }
+
+    .form-control {
+      background: rgba(25, 25, 25, 0.8) !important;
+      border: 1px solid rgba(var(--neon-accent), 0.2) !important;
+      color: #fff !important;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 0 15px rgba(var(--neon-accent), 0.2) !important;
+      border-color: var(--neon-accent) !important;
+    }
+
+    .btn-outline-light {
+      border-color: var(--neon-accent) !important;
+      color: var(--neon-accent) !important;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease !important;
+    }
+
+    .btn-outline-light::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(var(--neon-accent), 0.2),
+        transparent);
+      transition: left 0.6s;
+    }
+
+    .btn-outline-light:hover::before {
+      left: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .display-1 {
+        font-size: 5rem;
+      }
+    }
+    /* Fix visibility issues */
+  .content-section {
+    padding: 5rem 0;
+    background: rgba(15, 15, 15, 0.95);
+  }
+
+  .hero-section .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  .text-white-50 {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .navbar {
+    background: linear-gradient(90deg, 
+      rgba(15, 15, 15, 0.98) 0%, 
+      rgba(30, 30, 30, 0.98) 100%) !important;
+  }
+
+  .project-card {
+    background: linear-gradient(145deg, 
+      rgba(25, 25, 25, 0.9) 0%, 
+      rgba(40, 40, 40, 0.9) 100%) !important;
+  }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-black">
+    <!-- Loading Animation -->
+    <div class="page-loader">
+      <div class="spinner-border text-neon" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <!-- Floating Logo -->
+    <a href="#home" class="floating-logo">
+      <img src="./TNS LOGO.PNG" width="80" height="80" alt="Logo">
+    </a>
+  
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"><img src="./TNS LOGO.PNG" width="40" height="40" style="visibility: hidden;"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#works">Works</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+      <video autoplay muted loop class="hero-video">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-snowy-road-1225.mp4" type="video/mp4">
+      </video>
+      <div class="container">
+        <div class="text-center" data-aos="fade-up">
+          <h1 class="display-1 fw-bold text-white">THE NARRATIVE STUDIOS</h1>
+          <p class="lead text-white-50 mt-3">Crafting Visual Stories That Inspire</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="content-section">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-right">About Us</h2>
+        <p class="lead text-white-50" data-aos="fade-up">
+          We are a creative studio dedicated to producing compelling visual narratives. 
+          Our team of storytellers, filmmakers, and designers collaborate to create 
+          immersive experiences that captivate audiences worldwide.
+        </p>
+      </div>
+    </section>
+  
+    <!-- Works Section -->
+    <section id="works" class="content-section">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-right">Our Works</h2>
+        <div class="row g-4">
+          
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+            <div class="card project-card h-100 d-flex flex-column">
+              <img src="./CELEBRITY.jpg" class="card-img-top" alt="CELEBRITY">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">CELEBRITY</h5>
+                <p class="card-text flex-grow-1">Description Here</p>
+              </div>
+            </div>
+          </div>
+    
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+            <div class="card project-card h-100 d-flex flex-column">
+              <img src="./CONCERTS.jpg" class="card-img-top" alt="CONCERTS">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">CONCERTS</h5>
+                <p class="card-text flex-grow-1">Description here</p>
+              </div>
+            </div>
+          </div>
+    
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+            <div class="card project-card h-100 d-flex flex-column">
+              <img src="./INFLUENCER.JPG" class="card-img-top" alt="INFLUENCER">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">INFLUENCER</h5>
+                <p class="card-text flex-grow-1">Description here</p>
+              </div>
+            </div>
+          </div>
+    
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="400">
+            <div class="card project-card h-100 d-flex flex-column">
+              <img src="./SHORTFILM.jpg" class="card-img-top" alt="SHORT FILMS">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">SHORT FILMS</h5>
+                <p class="card-text flex-grow-1">Description here</p>
+              </div>
+            </div>
+          </div>
+    
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="500">
+            <div class="card project-card h-100 d-flex flex-column">
+              <img src="./EVENTS.JPG" class="card-img-top" alt="EVENTS">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">EVENTS</h5>
+                <p class="card-text flex-grow-1">Description here</p>
+              </div>
+            </div>
+          </div>
+    
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="600">
+            <div class="card project-card h-100 d-flex flex-column">
+              <img src="./DECOR.jpg" class="card-img-top" alt="DECOR">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">DECOR</h5>
+                <p class="card-text flex-grow-1">Description here</p>
+              </div>
+            </div>
+          </div>
+    
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="700">
+            <div class="card project-card h-100 d-flex flex-column">
+              <img src="./WEDDING.jpg" class="card-img-top" alt="WEDDING">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">WEDDING</h5>
+                <p class="card-text flex-grow-1">Description here</p>
+              </div>
+            </div>
+          </div>
+    
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="800">
+            <div class="card project-card h-100 d-flex flex-column">
+              <img src="./FESTIVAL.jpg" class="card-img-top" alt="FESTIVAL">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">FESTIVAL</h5>
+                <p class="card-text flex-grow-1">Description here</p>
+              </div>
+            </div>
+          </div>
+    
+        </div>
+      </div>
+    </section>
+    
+  
+    
+  
+    <!-- Contact Section -->
+    <section id="contact" class="content-section">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-right">Contact Us</h2>
+        <form class="mx-auto" style="max-width: 600px;" data-aos="fade-up">
+          <div class="mb-4">
+            <input type="email" class="form-control" placeholder="Your Email" required>
+          </div>
+          <div class="mb-4">
+            <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-outline-light">Send Message</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 1000,
+        once: true,
+        easing: 'ease-in-out'
+      });
+  
+      // Navbar scroll effect
+      window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        navbar.style.background = window.scrollY > 50 
+          ? 'linear-gradient(90deg, rgba(15,15,15,0.98) 0%, rgba(30,30,30,0.98) 100%)' 
+          : 'linear-gradient(90deg, rgba(25,25,25,0.95) 0%, rgba(40,40,40,0.95) 100%)';
+      });
+  
+      // Page load animation
+      window.addEventListener('load', () => {
+        document.querySelector('.page-loader').style.display = 'none';
+      });
+  
+      // Smooth scroll
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        });
+      });
+    </script>
+  </body>
+  </html>
